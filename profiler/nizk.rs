@@ -36,8 +36,8 @@ pub fn main() {
     let mut encoder = ZlibEncoder::new(Vec::new(), Compression::default());
     bincode::serialize_into(&mut encoder, &proof).unwrap();
     let proof_encoded = encoder.finish().unwrap();
-    let msg_proof_len = format!("NIZK::proof_compressed_len {:?}", proof_encoded.len());
-    print(&msg_proof_len);
+    ///let msg_proof_len = format!("NIZK::proof_compressed_len {:?}", proof_encoded.len());
+    ///print(&msg_proof_len);
 
     // verify the proof of satisfiability
     let mut verifier_transcript = Transcript::new(b"nizk_example");

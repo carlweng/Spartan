@@ -419,7 +419,7 @@ impl NIZK {
         &mut random_tape,
       );
       let proof_encoded: Vec<u8> = bincode::serialize(&proof).unwrap();
-      Timer::print(&format!("len_r1cs_sat_proof {:?}", proof_encoded.len()));
+      ///Timer::print(&format!("len_r1cs_sat_proof {:?}", proof_encoded.len()));
       (proof, rx, ry)
     };
 
@@ -444,12 +444,12 @@ impl NIZK {
 
     // We send evaluations of A, B, C at r = (rx, ry) as claims
     // to enable the verifier complete the first sum-check
-    let timer_eval = Timer::new("eval_sparse_polys");
+    ///let timer_eval = Timer::new("eval_sparse_polys");
     let (claimed_rx, claimed_ry) = &self.r;
     let inst_evals = inst.inst.evaluate(claimed_rx, claimed_ry);
-    timer_eval.stop();
+    ///timer_eval.stop();
 
-    let timer_sat_proof = Timer::new("verify_sat_proof");
+    ///let timer_sat_proof = Timer::new("verify_sat_proof");
     assert_eq!(input.assignment.len(), inst.inst.get_num_inputs());
     let (rx, ry) = self.r1cs_sat_proof.verify(
       inst.inst.get_num_vars(),
@@ -463,7 +463,7 @@ impl NIZK {
     // verify if claimed rx and ry are correct
     assert_eq!(rx, *claimed_rx);
     assert_eq!(ry, *claimed_ry);
-    timer_sat_proof.stop();
+    ///timer_sat_proof.stop();
     timer_verify.stop();
 
     Ok(())
