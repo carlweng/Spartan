@@ -15,7 +15,7 @@ fn print(msg: &str) {
 
 pub fn main() {
   // the list of number of variables (and constraints) in an R1CS instance
-  let inst_sizes = vec![10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  let inst_sizes = vec![26];
 
   println!("Profiler:: NIZK");
   for &s in inst_sizes.iter() {
@@ -36,8 +36,8 @@ pub fn main() {
     let mut encoder = ZlibEncoder::new(Vec::new(), Compression::default());
     bincode::serialize_into(&mut encoder, &proof).unwrap();
     let proof_encoded = encoder.finish().unwrap();
-    ///let msg_proof_len = format!("NIZK::proof_compressed_len {:?}", proof_encoded.len());
-    ///print(&msg_proof_len);
+    //let msg_proof_len = format!("NIZK::proof_compressed_len {:?}", proof_encoded.len());
+    //print(&msg_proof_len);
 
     // verify the proof of satisfiability
     let mut verifier_transcript = Transcript::new(b"nizk_example");
