@@ -147,13 +147,13 @@ impl R1CSProof {
     transcript: &mut Transcript,
     random_tape: &mut RandomTape,
   ) -> (R1CSProof, Vec<Scalar>, Vec<Scalar>) {
-    ///let timer_prove = Timer::new("R1CSProof::prove");
+    //let timer_prove = Timer::new("R1CSProof::prove");
     transcript.append_protocol_name(R1CSProof::protocol_name());
 
     // we currently require the number of |inputs| + 1 to be at most number of vars
     assert!(input.len() < vars.len());
 
-    ///let timer_commit = Timer::new("polycommit");
+    //let timer_commit = Timer::new("polycommit");
     let (poly_vars, comm_vars, blinds_vars) = {
       // create a multilinear polynomial using the supplied assignment for variables
       let poly_vars = DensePolynomial::new(vars.clone());
@@ -165,9 +165,9 @@ impl R1CSProof {
       comm_vars.append_to_transcript(b"poly_commitment", transcript);
       (poly_vars, comm_vars, blinds_vars)
     };
-    ///timer_commit.stop();
+    //timer_commit.stop();
 
-    ///let timer_sc_proof_phase1 = Timer::new("prove_sc_phase_one");
+    //let timer_sc_proof_phase1 = Timer::new("prove_sc_phase_one");
 
     // append input to variables to create a single vector z
     let z = {
@@ -202,7 +202,7 @@ impl R1CSProof {
     assert_eq!(poly_Az.len(), 1);
     assert_eq!(poly_Bz.len(), 1);
     assert_eq!(poly_Cz.len(), 1);
-    ///timer_sc_proof_phase1.stop();
+    //timer_sc_proof_phase1.stop();
 
     let (tau_claim, Az_claim, Bz_claim, Cz_claim) =
       (&poly_tau[0], &poly_Az[0], &poly_Bz[0], &poly_Cz[0]);
@@ -257,7 +257,7 @@ impl R1CSProof {
       &blind_claim_postsc1,
     );
 
-    ///let timer_sc_proof_phase2 = Timer::new("prove_sc_phase_two");
+    //let timer_sc_proof_phase2 = Timer::new("prove_sc_phase_two");
     // combine the three claims into a single claim
     let r_A = transcript.challenge_scalar(b"challenege_Az");
     let r_B = transcript.challenge_scalar(b"challenege_Bz");
@@ -289,9 +289,9 @@ impl R1CSProof {
       transcript,
       random_tape,
     );
-    ///timer_sc_proof_phase2.stop();
+    //timer_sc_proof_phase2.stop();
 
-    ///let timer_polyeval = Timer::new("polyeval");
+    //let timer_polyeval = Timer::new("polyeval");
     let eval_vars_at_ry = poly_vars.evaluate(&ry[1..].to_vec());
     let blind_eval = random_tape.random_scalar(b"blind_eval");
     let (proof_eval_vars_at_ry, comm_vars_at_ry) = PolyEvalProof::prove(
@@ -304,7 +304,7 @@ impl R1CSProof {
       transcript,
       random_tape,
     );
-    ///timer_polyeval.stop();
+    //timer_polyeval.stop();
 
     // prove the final step of sum-check #2
     let blind_eval_Z_at_ry = (Scalar::one() - ry[0]) * blind_eval;
@@ -320,7 +320,7 @@ impl R1CSProof {
       &blind_claim_postsc2,
     );
 
-    ///timer_prove.stop();
+    //timer_prove.stop();
 
     (
       R1CSProof {
